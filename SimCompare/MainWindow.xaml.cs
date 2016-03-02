@@ -55,7 +55,7 @@ namespace SimCompare
         private void btnCompare_Click(object sender, RoutedEventArgs e)
         {
             //update the list with our selected files
-            fMan.modifiedFilesToParse = String.Join(",", listBox_orig.SelectedItems.Cast<String>()).Split(',');
+            fMan.originalFileToParse = String.Join(",", listBox_orig.SelectedItems.Cast<String>()).Split(',');
             fMan.modifiedFilesToParse = String.Join(",", listBox_sims.SelectedItems.Cast<String>()).Split(',');
             //make sure we have at least one original and one modified file to compare
             if (fMan.originalFileToParse[0] == "" || fMan.modifiedFilesToParse[0] == "")
