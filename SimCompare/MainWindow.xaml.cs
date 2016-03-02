@@ -22,11 +22,16 @@ namespace SimCompare
     {
         FileMan fMan = new FileMan();
         String[] modes = new String[3] { "Sim Compare - 1 CSV", "CSV For Each", "CSV For Each - DIFF ONLY" };
+
         public MainWindow()
         {
             InitializeComponent();
+            //Get the data and fill the list boxes with proper filenames
             fillListBoxes();
+            //set the mode selector box with the approprite modes
             fillModeSelector();
+            //Set the title of the window appropriately
+            setWindowTitle();
         }
         public void fillListBoxes()
         {
@@ -65,6 +70,11 @@ namespace SimCompare
                 MessageBox.Show(fMan.parseFiles(false));
             else
                 MessageBox.Show(fMan.parseFiles(true));
+        }
+
+        private void setWindowTitle()
+        {
+            this.Title = Constants.TITLE + " Version: " + Constants.VERSION + "." + Constants.REVISION;
         }
     }
 }

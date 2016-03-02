@@ -24,7 +24,7 @@ namespace SimCompare
         {
             try
             {
-                originalFile = Directory.GetFiles("./original/", "*.xml").OrderByDescending(d => new FileInfo(d).CreationTime).ToArray();
+                originalFile = Directory.GetFiles("./original/", "*.xml").OrderByDescending(d => new FileInfo(d).LastWriteTime).ToArray();
             }
             catch
             {
@@ -32,7 +32,7 @@ namespace SimCompare
             }
             try
             {
-                fileList = Directory.GetFiles("./changes/", "*.xml").OrderByDescending(d => new FileInfo(d).CreationTime).ToArray();
+                fileList = Directory.GetFiles("./changes/", "*.xml").OrderByDescending(d => new FileInfo(d).LastWriteTime).ToArray();
             }
             catch
             {
