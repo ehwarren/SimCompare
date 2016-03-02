@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SimCompare"
         mc:Ignorable="d"
-        Title="SimCompare" Height="341.072" Width="547.869" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+        Title="SimCompare" Height="341.072" Width="547.869" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="ToolWindow">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="229*"/>

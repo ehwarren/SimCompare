@@ -43,9 +43,10 @@ namespace SimCompare
         public string parseFilesInOne()
         {
             //Load the XML data for the original file
+            XDocument orig;
             try
             {
-                XDocument orig = XDocument.Load(originalFileToParse[0]);
+                orig = XDocument.Load(originalFileToParse[0]);
             }
             catch (Exception e)
             {
@@ -177,9 +178,12 @@ namespace SimCompare
         public string parseFiles(bool outputDifferences)
         {
             //Load the XML data for the original file
+            XDocument orig;
+            XDocument doc;
+
             try
             {
-                XDocument orig = XDocument.Load(originalFileToParse[0]);
+                orig = XDocument.Load(originalFileToParse[0]);
             }
             catch (Exception e)
             {
@@ -197,7 +201,7 @@ namespace SimCompare
                 //Load the xml data for the file we are comparing   
                 try
                 {
-                    XDocument doc = XDocument.Load(fname);
+                    doc = XDocument.Load(fname);
                 }
                 catch (Exception e)
                 {
