@@ -43,12 +43,28 @@ namespace SimCompare
         public string parseFilesInOne()
         {
             //Load the XML data for the original file
-            XDocument orig = XDocument.Load(originalFileToParse[0]);
+            try
+            {
+                XDocument orig = XDocument.Load(originalFileToParse[0]);
+            }
+            catch (Exception e)
+            {
+                return e.Message;
+            }
+
             //Load the xml data for each of the simulations
             XDocument[] changes = new XDocument[modifiedFilesToParse.Length];
             for (int i = 0; i < modifiedFilesToParse.Length; i++)
             {
-                changes[i] = XDocument.Load(modifiedFilesToParse[i]);
+                try
+                {
+                    changes[i] = XDocument.Load(modifiedFilesToParse[i]);
+                }
+                catch (Exception e)
+                {
+                    return e.Message;
+                }
+
             }
 
             //This list is used to store the values we grab from the XML files. 
@@ -161,7 +177,14 @@ namespace SimCompare
         public string parseFiles(bool outputDifferences)
         {
             //Load the XML data for the original file
-            XDocument orig = XDocument.Load(originalFileToParse[0]);
+            try
+            {
+                XDocument orig = XDocument.Load(originalFileToParse[0]);
+            }
+            catch (Exception e)
+            {
+                return e.Message;
+            }
 
             //Loop through each of the files we want to compare the original for..
             foreach (String fname in modifiedFilesToParse)
@@ -171,8 +194,15 @@ namespace SimCompare
                 //Each of the list values will eventuall be one line in our CSV file.
                 List<String> values = new List<String>();
 
-                //Load the xml data for the file we are comparing          
-                XDocument doc = XDocument.Load(fname);
+                //Load the xml data for the file we are comparing   
+                try
+                {
+                    XDocument doc = XDocument.Load(fname);
+                }
+                catch (Exception e)
+                {
+                    return e.Message;
+                }
 
                 //Make the first lines of our CSV file some useful headers.
                 values.Add("ORIGINAL DATA,,,,,,,,CHANGED DATA");
