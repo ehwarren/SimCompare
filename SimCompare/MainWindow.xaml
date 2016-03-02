@@ -5,20 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SimCompare"
         mc:Ignorable="d"
-        Title="SimCompare" Height="327.132" Width="547.869">
+        Title="SimCompare" Height="341.072" Width="547.869" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="273*"/>
-            <ColumnDefinition Width="272*"/>
+            <ColumnDefinition Width="229*"/>
+            <ColumnDefinition Width="41*"/>
+            <ColumnDefinition Width="0*"/>
+            <ColumnDefinition Width="270*"/>
         </Grid.ColumnDefinitions>
-        <ListBox x:Name="listBox_orig" HorizontalAlignment="Left" Height="214" Margin="10,41,0,0" VerticalAlignment="Top" Width="250"/>
-        <ListBox x:Name="listBox_sims" HorizontalAlignment="Left" Height="214" Margin="6,41,0,0" VerticalAlignment="Top" Width="250" SelectionMode="Extended" Grid.Column="1"/>
-        <ComboBox x:Name="modeSelector" HorizontalAlignment="Left" Margin="98,264,0,0" VerticalAlignment="Top" Width="162"/>
-        <Label x:Name="labelOriginals" Content="Original File" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="250"/>
-        <Label x:Name="labelSims" Content="Simulation Files" HorizontalAlignment="Left" Margin="6,10,0,0" VerticalAlignment="Top" Width="250" Grid.Column="1"/>
-        <Label x:Name="labelModeSelector" Content="Output Mode" HorizontalAlignment="Left" Margin="10,260,0,0" VerticalAlignment="Top" Width="83"/>
-        <Button x:Name="btnCompare" Content="Compare!" Grid.Column="1" HorizontalAlignment="Left" Margin="152,264,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.797,-0.318" Click="btnCompare_Click"/>
-        <Button x:Name="btnRefresh" Content="Refresh Files" Grid.Column="1" HorizontalAlignment="Left" Margin="39,265,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.797,-0.318" Click="btnRefresh_Click"/>
+        <ListBox x:Name="listBox_orig" HorizontalAlignment="Left" Height="214" Margin="10,41,0,0" VerticalAlignment="Top" Width="250" FontFamily="Segoe UI Semilight" Grid.ColumnSpan="2"/>
+        <ListBox x:Name="listBox_sims" HorizontalAlignment="Left" Height="214" Margin="6,41,0,0" VerticalAlignment="Top" Width="250" SelectionMode="Extended" Grid.Column="3" FontFamily="Segoe UI Semilight"/>
+        <ComboBox x:Name="modeSelector" HorizontalAlignment="Left" Margin="98,264,0,0" VerticalAlignment="Top" Width="162" Background="{x:Null}" Grid.ColumnSpan="2" Height="22"/>
+        <Label x:Name="labelOriginals" Content="Original File" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="250" FontFamily="Segoe UI Semilight" Grid.ColumnSpan="2" Height="26"/>
+        <Label x:Name="labelSims" Content="Simulation Files" HorizontalAlignment="Left" Margin="6,10,0,0" VerticalAlignment="Top" Width="250" Grid.Column="3" FontFamily="Segoe UI Semilight" Height="26"/>
+        <Label x:Name="labelModeSelector" Content="Output Mode" HorizontalAlignment="Left" Margin="10,260,0,0" VerticalAlignment="Top" Width="83" FontFamily="Segoe UI Semilight" Height="26"/>
+        <Button x:Name="btnCompare" Content="Compare!" Grid.Column="3" HorizontalAlignment="Left" Margin="152,264,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.797,-0.318" Click="btnCompare_Click" FontFamily="Segoe UI Semilight" Background="{x:Null}" Height="22"/>
+        <Button x:Name="btnRefresh" Content="Refresh Files" Grid.Column="3" HorizontalAlignment="Left" Margin="39,265,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.797,-0.318" Click="btnRefresh_Click" FontFamily="Segoe UI Semilight" Background="{x:Null}" Height="22"/>
 
     </Grid>
 </Window>

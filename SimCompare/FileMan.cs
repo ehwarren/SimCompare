@@ -10,10 +10,10 @@ namespace SimCompare
 {
     class FileMan
     {
-        public String[] originalFile;
-        public String[] fileList;
-        public String[] originalFileToParse;
-        public String[] modifiedFilesToParse;
+        private String[] originalFile;
+        private String[] fileList;
+        public String[] originalFileToParse { get; set; }
+        public String[] modifiedFilesToParse { get; set; }
 
         public FileMan()
         {
@@ -40,7 +40,7 @@ namespace SimCompare
             }
         }
 
-        public void parseFilesInOne()
+        public string parseFilesInOne()
         {
             //Load the XML data for the original file
             XDocument orig = XDocument.Load(originalFileToParse[0]);
@@ -154,11 +154,11 @@ namespace SimCompare
                 currentLine = "";
 
             }
-            writeCSV(values, originalFileToParse[0]);
+            return writeCSV(values, originalFileToParse[0]);
 
         }
 
-        public void parseFiles(bool outputDifferences)
+        public string parseFiles(bool outputDifferences)
         {
             //Load the XML data for the original file
             XDocument orig = XDocument.Load(originalFileToParse[0]);
@@ -253,20 +253,14 @@ namespace SimCompare
                 writeCSV(values, fname);
                 //write the new csv file  
             }
+            return "Wrote all files succesfully";
         }
 
-        private void writeCSV(List<String> values, string fname)
+        private String writeCSV(List<String> values, string fname)
         {
             string parentName = Path.GetFileName(fname);
             File.WriteAllLines(parentName + ".csv", values);
-            Console.WriteLine("Succesfully wrote file: " + parentName + ".csv");
-        }
-        public void echoFileNames()
-        {
-            foreach (String fname in fileList)
-            {
-                Console.WriteLine(fname);
-            }
+            return "Succesfully wrote file: " + parentName + ".csv";
         }
         public String[] getSimulationNames()
         {

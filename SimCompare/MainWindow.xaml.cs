@@ -50,20 +50,21 @@ namespace SimCompare
         private void btnCompare_Click(object sender, RoutedEventArgs e)
         {
             //update the list with our selected files
-            fMan.originalFileToParse = String.Join(",", listBox_orig.SelectedItems.Cast<String>()).Split(',');
+            fMan. = String.Join(",", listBox_orig.SelectedItems.Cast<String>()).Split(',');
             fMan.modifiedFilesToParse = String.Join(",", listBox_sims.SelectedItems.Cast<String>()).Split(',');
+            //make sure we have at least one original and one modified file to compare
+            if (fMan.originalFileToParse[0] == "" || fMan.modifiedFilesToParse[0] == "")
+            {
+                MessageBox.Show("You must select at least one original file and one modified file to compare...");
+                return;
+            }
+            //Choose the correct mode
             if(modeSelector.SelectedIndex == 0)
-            {
-                fMan.parseFilesInOne();
-            }else if(modeSelector.SelectedIndex == 1)
-            {
-                fMan.parseFiles(false);
-            }
+                MessageBox.Show(fMan.parseFilesInOne());
+            else if(modeSelector.SelectedIndex == 1)
+                MessageBox.Show(fMan.parseFiles(false));
             else
-            {
-                fMan.parseFiles(true);
-            }
-            MessageBox.Show("Files Compared Succesfully");
+                MessageBox.Show(fMan.parseFiles(true));
         }
     }
 }
