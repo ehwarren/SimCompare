@@ -91,6 +91,13 @@ namespace SimCompare
             values.Add(currentLine);
             //clear our currentLine variable because we've added it to the list already
             currentLine = "";
+            
+            //Verify that the amount of data in the original and all simualtion files matches
+            foreach(XDocument d in changes)
+            {
+                if (d.Root.Elements().Count() != orig.Root.Elements().Count())
+                    return "ERROR: Number of boards in Simulation does not match Original";
+            } 
 
             //Loop through each of the files we want to compare the original for..
             Console.WriteLine("Parsing the files...");
@@ -293,7 +300,15 @@ namespace SimCompare
         private String writeCSV(List<String> values, string fname)
         {
             string parentName = Path.GetFileName(fname);
-            File.WriteAllLines(parentName + ".csv", values);
+            try
+            {
+                File.WriteAllLines(parentName + ".csv", values);
+            }
+            catch(Exception e)
+            {
+                return e.Message;
+            }
+            
             return "Succesfully wrote file: " + parentName + ".csv";
         }
         public String[] getSimulationNames()
