@@ -74,7 +74,7 @@ namespace SimCompare
 
         private void setWindowTitle()
         {
-            this.Title = Constants.TITLE + " Version: " + Constants.VERSION + "." + Constants.REVISION;
+            this.Title = Constants.TITLE + " - Version: " + Constants.VERSION + "." + Constants.REVISION;
         }
     }
 }
