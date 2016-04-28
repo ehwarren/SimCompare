@@ -18,11 +18,11 @@
         <ListBox x:Name="listBox_orig" HorizontalAlignment="Left" Height="214" Margin="10,41,0,0" VerticalAlignment="Top" Width="250" FontFamily="Segoe UI Semilight" Grid.ColumnSpan="3"/>
         <ListBox x:Name="listBox_sims" HorizontalAlignment="Left" Height="214" Margin="6,41,0,0" VerticalAlignment="Top" Width="250" SelectionMode="Extended" Grid.Column="3" FontFamily="Segoe UI Semilight" Grid.ColumnSpan="3"/>
         <ComboBox x:Name="modeSelector" HorizontalAlignment="Left" Margin="98,264,0,0" VerticalAlignment="Top" Width="162" Background="{x:Null}" Grid.ColumnSpan="3" Height="22"/>
-        <Label x:Name="labelOriginals" Content="Original File" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="250" FontFamily="Segoe UI Semilight" Grid.ColumnSpan="3" Height="26"/>
-        <Label x:Name="labelSims" Content="Simulation Files" HorizontalAlignment="Left" Margin="6,10,0,0" VerticalAlignment="Top" Width="250" Grid.Column="3" FontFamily="Segoe UI Semilight" Height="26" Grid.ColumnSpan="3"/>
+        <Label x:Name="labelOriginals" Content="Original File" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="250" FontFamily="Segoe UI Semilight" Grid.ColumnSpan="3" Height="26" ToolTip="Select one of the files in the &quot;original&quot; folder"/>
+        <Label x:Name="labelSims" Content="Simulation Files" HorizontalAlignment="Left" Margin="6,10,0,0" VerticalAlignment="Top" Width="250" Grid.Column="3" FontFamily="Segoe UI Semilight" Height="26" Grid.ColumnSpan="3" ToolTip="Select all the files you would like to compare with the original.."/>
         <Label x:Name="labelModeSelector" Content="Output Mode" HorizontalAlignment="Left" Margin="10,260,0,0" VerticalAlignment="Top" Width="83" FontFamily="Segoe UI Semilight" Height="26"/>
-        <Button x:Name="btnCompare" Content="Compare!" Grid.Column="3" HorizontalAlignment="Left" Margin="152,264,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.797,-0.318" Click="btnCompare_Click" FontFamily="Segoe UI Semilight" Background="{x:Null}" Height="22" Grid.ColumnSpan="3"/>
-        <Button x:Name="btnRefresh" Content="Refresh Files" Grid.Column="3" HorizontalAlignment="Left" Margin="39,265,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.797,-0.318" Click="btnRefresh_Click" FontFamily="Segoe UI Semilight" Background="{x:Null}" Height="22" Grid.ColumnSpan="2"/>
+        <Button x:Name="btnCompare" Content="Compare!" Grid.Column="3" HorizontalAlignment="Left" Margin="152,264,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.797,-0.318" Click="btnCompare_Click" FontFamily="Segoe UI Semilight" Background="{x:Null}" Height="22" Grid.ColumnSpan="3" ToolTip="Compare the selected files.."/>
+        <Button x:Name="btnRefresh" Content="Refresh Files" Grid.Column="3" HorizontalAlignment="Left" Margin="39,265,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.797,-0.318" Click="btnRefresh_Click" FontFamily="Segoe UI Semilight" Background="{x:Null}" Height="22" Grid.ColumnSpan="2" ToolTip="Refresh files in the lists above"/>
 
     </Grid>
 </Window>
