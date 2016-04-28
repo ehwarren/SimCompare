@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using System.Xml.Linq;
 
 namespace SimCompare
@@ -46,7 +47,7 @@ namespace SimCompare
             XDocument orig;
             try
             {
-                orig = XDocument.Load(originalFileToParse[0]);
+                orig = Sort(XDocument.Load(originalFileToParse[0]));
             }
             catch (Exception e)
             {
@@ -59,7 +60,7 @@ namespace SimCompare
             {
                 try
                 {
-                    changes[i] = XDocument.Load(modifiedFilesToParse[i]);
+                    changes[i] = Sort(XDocument.Load(modifiedFilesToParse[i]));
                 }
                 catch (Exception e)
                 {
@@ -101,30 +102,32 @@ namespace SimCompare
 
             //Loop through each of the files we want to compare the original for..
             Console.WriteLine("Parsing the files...");
+            Console.WriteLine(orig.Root.Elements().Count());
             //Loop through all of the XML data..
             for (int j = 0; j < orig.Root.Elements().Count(); j++)
             {
                 //Flag to see if the original data(only checking name), is differnet from the other file
                 bool isDifferent = false;
-                string curLugIndex = "";
 
                 //Create our xelement for this section of original, and modified data
+                //XElement orig_data = (XElement)orig_ordered.Elements().ElementAt(j);
                 XElement orig_data = orig.Root.Elements().ElementAt(j);
-
                 //Declare an empty string to be used as a placeholder for data before we add it to the String List values.
                 string entry = "";
 
+               
                 //Loop through each element in that section of of the XML file. Add the original data, then the changed data, and then compare
                 for (int i = 0; i < orig_data.Elements().Count(); i++)
                 {
+                    //Console.WriteLine(orig_data.Elements().ElementAt(i).Name.LocalName);
                     try
                     {
                         //we only keep shapeId, lugIndex, name, grade, price and volume
                         if (orig_data.Elements().ElementAt(i).Name.LocalName == "shapeId" || orig_data.Elements().ElementAt(i).Name.LocalName == "lugIndex" || orig_data.Elements().ElementAt(i).Name.LocalName == "name" || orig_data.Elements().ElementAt(i).Name.LocalName == "grade" || orig_data.Elements().ElementAt(i).Name.LocalName == "price")
                         {
                             //save the value of the current lug index
-                            if (orig_data.Elements().ElementAt(i).Name.LocalName == "lugIndex")
-                                curLugIndex = orig_data.Elements().ElementAt(i).Value;
+                            //if (orig_data.Elements().ElementAt(i).Name.LocalName == "lugIndex")
+                            //    curLugIndex = orig_data.Elements().ElementAt(i).Value;
                             //This is to account for a no solution 
                             if (orig_data.Elements().ElementAt(i).Name.LocalName == "price" && orig_data.Elements().ElementAt(i).Value == "0.0")
                                 entry += ",,";
@@ -144,31 +147,8 @@ namespace SimCompare
                 for (int sim = 0; sim < changes.Length; sim++)
                 {
                     isDifferent = false;    //BugFix1 - Didn't clear the variable, so if the first file compared was different it would assume all the rest were too...
-                    //We need to find the location that the lug index from our original is in the sim file because the threaded output is not always in the same order for new interface
-                    int lugIndexElementLocation = 0;
-                    for (int i = 0; i<changes[sim].Root.Elements().Count(); i++)
-                    {
-                        XElement ele = changes[sim].Root.Elements().ElementAt(i);
-                        for(int k = 0; k< ele.Elements().Count(); k++)
-                        {
-                            try
-                            {
-                                if (ele.Elements().ElementAt(k).Name.LocalName == "lugIndex")
-                                {
-                                    if (ele.Elements().ElementAt(k).Value == curLugIndex)
-                                    {
-                                        lugIndexElementLocation = i;
-                                        break;
-                                    }
-                                        
-                                }
-                            }
-                            catch { }
 
-                        }
-                    }
-
-                    XElement element = changes[sim].Root.Elements().ElementAt(lugIndexElementLocation);
+                    XElement element = changes[sim].Root.Elements().ElementAt(j);
                     for (int i = 0; i < element.Elements().Count(); i++)
                     {
                         try
@@ -218,7 +198,7 @@ namespace SimCompare
 
             try
             {
-                orig = XDocument.Load(originalFileToParse[0]);
+                orig = Sort(XDocument.Load(originalFileToParse[0]));
             }
             catch (Exception e)
             {
@@ -236,7 +216,7 @@ namespace SimCompare
                 //Load the xml data for the file we are comparing   
                 try
                 {
-                    doc = XDocument.Load(fname);
+                    doc = Sort(XDocument.Load(fname));
                 }
                 catch (Exception e)
                 {
@@ -255,44 +235,7 @@ namespace SimCompare
 
                     //Create our xelement for this section of original, and modified data
                     XElement orig_data = orig.Root.Elements().ElementAt(j);
-
-                    //Find the lugIndex that we are currently looking at and locate it in the sim xml file
-                    string curLugIndex = "";
-                    for (int i = 0; i< orig_data.Elements().Count(); i++)
-                    {
-                        try
-                        {
-                            if (orig_data.Elements().ElementAt(i).Name.LocalName == "lugIndex")
-                            {
-                                curLugIndex = orig_data.Elements().ElementAt(i).Value;
-                                break;
-                            }
-
-                        }
-                        catch { }
-                    }
-                    int lugIndexElementLocation = 0;
-                    for (int i = 0; i < doc.Root.Elements().Count(); i++)
-                    {
-                        XElement ele = doc.Root.Elements().ElementAt(i);
-                        try
-                        {
-                            for (int k = 0; k < ele.Elements().Count(); k++)
-                            {
-                                if (ele.Elements().ElementAt(k).Name.LocalName == "lugIndex")
-                                {
-                                    if (ele.Elements().ElementAt(k).Value == curLugIndex)
-                                    {
-                                        lugIndexElementLocation = i;
-                                        break;
-                                    }
-                                }
-
-                            }
-                        }
-                        catch { }
-                    }
-                    XElement element = doc.Root.Elements().ElementAt(lugIndexElementLocation);
+                    XElement element = doc.Root.Elements().ElementAt(j);
 
                     //Declare an empty string to be used as a placeholder for data before we add it to the String List values.
                     string entry = "";
@@ -384,6 +327,14 @@ namespace SimCompare
         public String[] getOriginalNames()
         {
             return originalFile;
+        }
+
+        private static XDocument Sort(XDocument file)
+        {
+            var tt = file.Element("Data")
+               .Elements("Solution")
+               .OrderByDescending(p => p.Element("lugIndex").Value);
+            return new XDocument(new XElement("Data", tt));
         }
     }
 }
