@@ -80,6 +80,7 @@ namespace SimCompare
             {
                 currentLine += "SIMULATION ";
                 currentLine += i + 1;
+                currentLine += " " + modifiedFilesToParse[i];
                 currentLine += ",,,,,,,,";
             }
             values.Add(currentLine);
@@ -115,71 +116,67 @@ namespace SimCompare
                 //Declare an empty string to be used as a placeholder for data before we add it to the String List values.
                 string entry = "";
 
-               
-                //Loop through each element in that section of of the XML file. Add the original data, then the changed data, and then compare
-                for (int i = 0; i < orig_data.Elements().Count(); i++)
+                try
                 {
-                    //Console.WriteLine(orig_data.Elements().ElementAt(i).Name.LocalName);
-                    try
-                    {
-                        //we only keep shapeId, lugIndex, name, grade, price and volume
-                        if (orig_data.Elements().ElementAt(i).Name.LocalName == "shapeId" || orig_data.Elements().ElementAt(i).Name.LocalName == "lugIndex" || orig_data.Elements().ElementAt(i).Name.LocalName == "name" || orig_data.Elements().ElementAt(i).Name.LocalName == "grade" || orig_data.Elements().ElementAt(i).Name.LocalName == "price")
-                        {
-                            //save the value of the current lug index
-                            //if (orig_data.Elements().ElementAt(i).Name.LocalName == "lugIndex")
-                            //    curLugIndex = orig_data.Elements().ElementAt(i).Value;
-                            //This is to account for a no solution 
-                            if (orig_data.Elements().ElementAt(i).Name.LocalName == "price" && orig_data.Elements().ElementAt(i).Value == "0.0")
-                                entry += ",,";
-                            entry += (orig_data.Elements().ElementAt(i).Value + ",");
-                        }
-                        else if (orig_data.Elements().ElementAt(i).Name.LocalName == "volume")
-                        {
-                            entry += (orig_data.Elements().ElementAt(i).Value + ",,");
+                    entry += orig_data.Element("shapeId").Value + ",";
+                    entry += orig_data.Element("lugIndex").Value + ",";
 
-                        }
-                        //values.Add(el.Attribute("Value").Value.ToString());
+                    //To account for no solution
+                    if (orig_data.Element("price").Value != "0.0")
+                    {
+                        entry += orig_data.Element("name").Value + ",";
+                        entry += orig_data.Element("grade").Value + ",";
                     }
-                    catch { }
+                    else
+                    {
+                        entry += ",,";
+                    }
+
+                    entry += orig_data.Element("price").Value + ",";
+                    entry += orig_data.Element("volume").Value + ",,";
                 }
+                catch { }
+               
 
                 //now we loop through each of our changed files and add the entry to the list
                 for (int sim = 0; sim < changes.Length; sim++)
                 {
                     isDifferent = false;    //BugFix1 - Didn't clear the variable, so if the first file compared was different it would assume all the rest were too...
 
-                    XElement element = changes[sim].Root.Elements().ElementAt(j);
-                    for (int i = 0; i < element.Elements().Count(); i++)
+                    XElement sim_data = changes[sim].Root.Elements().ElementAt(j);
+                    try
                     {
-                        try
-                        {
-                            //we only keep shapeId, lugIndex, name, grade, price and volume
-                            if (element.Elements().ElementAt(i).Name.LocalName == "shapeId" || element.Elements().ElementAt(i).Name.LocalName == "lugIndex" || element.Elements().ElementAt(i).Name.LocalName == "name" || element.Elements().ElementAt(i).Name.LocalName == "grade" || element.Elements().ElementAt(i).Name.LocalName == "price")
-                            {
-                                if (element.Elements().ElementAt(i).Name.LocalName == "price" && orig_data.Elements().ElementAt(i).Value == "0.0")
-                                    entry += ",,";
-                                entry += (element.Elements().ElementAt(i).Value + ",");
-                            }
-                            else if (element.Elements().ElementAt(i).Name.LocalName == "volume")
-                            {
-                                entry += (element.Elements().ElementAt(i).Value);
+                        entry += sim_data.Element("shapeId").Value + ",";
+                        entry += sim_data.Element("lugIndex").Value + ",";
 
-                            }
-                            if (element.Elements().ElementAt(i).Name.LocalName == "name")
-                            {
-                                if (element.Elements().ElementAt(i).Value != orig_data.Elements().ElementAt(i).Value)
-                                    isDifferent = true;
-                            }
+                        //To account for no solution
+                        if (sim_data.Element("price").Value != "0.0")
+                        {
+                            entry += sim_data.Element("name").Value + ",";
+                            entry += sim_data.Element("grade").Value + ",";
                         }
-                        catch { }
+                        else
+                        {
+                            entry += ",,";
+                        }
+
+                        entry += sim_data.Element("price").Value + ",";
+                        entry += sim_data.Element("volume").Value + ",,";
+
+                        if(sim_data.Elements("name").Any() && orig_data.Elements("name").Any())
+                        {
+                            if (sim_data.Element("name").Value != orig_data.Element("name").Value)
+                                isDifferent = true;
+                        }
+                        
                     }
+                    catch { }
                     if (isDifferent)
                         entry += ",1,,";
                     else
                         entry += ",,,";
-
-
                 }
+
                 values.Add(entry);
                 currentLine += entry;
 
