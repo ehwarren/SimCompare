@@ -23,6 +23,5 @@
         <Label x:Name="labelModeSelector" Content="Output Mode" HorizontalAlignment="Left" Margin="10,260,0,0" VerticalAlignment="Top" Width="83" FontFamily="Segoe UI Semilight" Height="26"/>
         <Button x:Name="btnCompare" Content="Compare!" Grid.Column="3" HorizontalAlignment="Left" Margin="152,264,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.797,-0.318" Click="btnCompare_Click" FontFamily="Segoe UI Semilight" Background="{x:Null}" Height="22" Grid.ColumnSpan="3" ToolTip="Compare the selected files.."/>
         <Button x:Name="btnRefresh" Content="Refresh Files" Grid.Column="3" HorizontalAlignment="Left" Margin="39,265,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.797,-0.318" Click="btnRefresh_Click" FontFamily="Segoe UI Semilight" Background="{x:Null}" Height="22" Grid.ColumnSpan="2" ToolTip="Refresh files in the lists above"/>
-
     </Grid>
 </Window>

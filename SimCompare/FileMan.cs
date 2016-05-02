@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Xml;
 using System.Xml.Linq;
 
@@ -41,17 +43,17 @@ namespace SimCompare
             }
         }
 
-        public string parseFilesInOne()
+        public void parseFilesInOne(object sender, EventArgs eventArgs)
         {
             //Load the XML data for the original file
-            XDocument orig;
+            XDocument orig = new XDocument();
             try
             {
                 orig = Sort(XDocument.Load(originalFileToParse[0]));
             }
             catch (Exception e)
             {
-                return e.Message;
+                MessageBox.Show(e.Message);
             }
 
             //Load the xml data for each of the simulations
@@ -64,7 +66,7 @@ namespace SimCompare
                 }
                 catch (Exception e)
                 {
-                    return e.Message;
+                    MessageBox.Show(e.Message);
                 }
 
             }
@@ -98,7 +100,7 @@ namespace SimCompare
             foreach(XDocument d in changes)
             {
                 if (d.Root.Elements().Count() != orig.Root.Elements().Count())
-                    return "ERROR: Number of boards in Simulation does not match Original";
+                    MessageBox.Show("ERROR: Number of boards in Simulation does not match Original");
             } 
 
             //Loop through each of the files we want to compare the original for..
@@ -107,6 +109,8 @@ namespace SimCompare
             //Loop through all of the XML data..
             for (int j = 0; j < orig.Root.Elements().Count(); j++)
             {
+                float prog = (((float)j) / orig.Root.Elements().Count())*100;
+                (sender as BackgroundWorker).ReportProgress((int)prog);
                 //Flag to see if the original data(only checking name), is differnet from the other file
                 bool isDifferent = false;
 
@@ -161,7 +165,7 @@ namespace SimCompare
                         }
 
                         entry += sim_data.Element("price").Value + ",";
-                        entry += sim_data.Element("volume").Value + ",,";
+                        entry += sim_data.Element("volume").Value + ",";
 
                         if(sim_data.Elements("name").Any() && orig_data.Elements("name").Any())
                         {
@@ -172,9 +176,9 @@ namespace SimCompare
                     }
                     catch { }
                     if (isDifferent)
-                        entry += ",1,,";
+                        entry += "1,,";
                     else
-                        entry += ",,,";
+                        entry += ",,";
                 }
 
                 values.Add(entry);
@@ -183,7 +187,7 @@ namespace SimCompare
                 currentLine = "";
 
             }
-            return writeCSV(values, originalFileToParse[0]);
+            MessageBox.Show(writeCSV(values, originalFileToParse[0]));
 
         }
 
@@ -305,16 +309,18 @@ namespace SimCompare
         private String writeCSV(List<String> values, string fname)
         {
             string parentName = Path.GetFileName(fname);
+            string savePath = Constants.OUTPUT_FOLDER + "/" + parentName + ".csv";
             try
             {
-                File.WriteAllLines(parentName + ".csv", values);
+                (new FileInfo(savePath)).Directory.Create();
+                File.WriteAllLines(savePath, values);
             }
             catch(Exception e)
             {
                 return e.Message;
             }
             
-            return "Succesfully wrote file: " + parentName + ".csv";
+            return savePath;
         }
         public String[] getSimulationNames()
         {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +23,7 @@ namespace SimCompare
     {
         FileMan fMan = new FileMan();
         String[] modes = new String[3] { "Sim Compare - 1 CSV", "CSV For Each", "CSV For Each - DIFF ONLY" };
+        ProgressBar pB;
 
         public MainWindow()
         {
@@ -32,6 +34,7 @@ namespace SimCompare
             fillModeSelector();
             //Set the title of the window appropriately
             setWindowTitle();
+            //set the progressBar window owner
         }
         public void fillListBoxes()
         {
@@ -54,6 +57,8 @@ namespace SimCompare
 
         private void btnCompare_Click(object sender, RoutedEventArgs e)
         {
+            pB = new ProgressBar();
+            pB.Owner = this;
             //update the list with our selected files
             fMan.originalFileToParse = String.Join(",", listBox_orig.SelectedItems.Cast<String>()).Split(',');
             fMan.modifiedFilesToParse = String.Join(",", listBox_sims.SelectedItems.Cast<String>()).Split(',');
@@ -63,15 +68,35 @@ namespace SimCompare
                 MessageBox.Show("You must select at least one original file and one modified file to compare...");
                 return;
             }
+
             //Choose the correct mode
-            if(modeSelector.SelectedIndex == 0)
-                MessageBox.Show(fMan.parseFilesInOne());
-            else if(modeSelector.SelectedIndex == 1)
+            if (modeSelector.SelectedIndex == 0)
+            {
+                pB.Show();
+                BackgroundWorker worker = new BackgroundWorker();
+                worker.WorkerReportsProgress = true;
+                worker.DoWork += fMan.parseFilesInOne;
+                worker.ProgressChanged += updateProgress;
+                worker.RunWorkerCompleted += hideProgressBar;
+                worker.RunWorkerAsync();
+            }
+            else if (modeSelector.SelectedIndex == 1)
                 MessageBox.Show(fMan.parseFiles(false));
             else
                 MessageBox.Show(fMan.parseFiles(true));
+
+
+            //pB.Hide();
         }
 
+        void updateProgress(object sender, ProgressChangedEventArgs e)
+        {
+            pB.Progress.Value = e.ProgressPercentage;
+        }
+        void hideProgressBar(object sender, RunWorkerCompletedEventArgs e)
+        {
+            pB.Hide();
+        }
         private void setWindowTitle()
         {
             this.Title = Constants.TITLE + " - Version: " + Constants.VERSION + "." + Constants.REVISION;
