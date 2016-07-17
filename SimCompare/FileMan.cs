@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -17,6 +18,7 @@ namespace SimCompare
         private String[] fileList;
         public String[] originalFileToParse { get; set; }
         public String[] modifiedFilesToParse { get; set; }
+        static string seperator = CultureInfo.CurrentCulture.TextInfo.ListSeparator;
 
         public FileMan()
         {
@@ -77,20 +79,31 @@ namespace SimCompare
 
             String currentLine = "";
             //Add the tags for each of the simulations
-            currentLine = "ORIGINAL DATA,,,,,,,";
+            currentLine = "ORIGINAL DATA" + seperator + seperator + seperator + seperator + seperator + seperator + seperator;
             for (int i = 0; i < modifiedFilesToParse.Length; i++)
             {
                 currentLine += "SIMULATION ";
                 currentLine += i + 1;
                 currentLine += " " + modifiedFilesToParse[i];
-                currentLine += ",,,,,,,,";
+                currentLine += seperator + seperator + seperator + seperator + seperator + seperator + seperator + seperator;
             }
             values.Add(currentLine);
             //add the column headers for each of the simulations
-            currentLine = "shapeId, lugIndex, name, grade, price, volume,,";
+            currentLine = "shapeId" + seperator +
+                            " lugIndex" + seperator +
+                            " name" + seperator + 
+                            " grade" + seperator +
+                            " price" + seperator + 
+                            " volume" + seperator + seperator;
             for (int i = 0; i < modifiedFilesToParse.Length; i++)
             {
-                currentLine += "shapeId, lugIndex, name, grade, price, volume,isDifferent,,";
+                currentLine += "shapeId" + seperator +
+                                " lugIndex" + seperator +
+                                " name" + seperator + 
+                                " grade" + seperator +
+                                " price" + seperator +
+                                " volume" + seperator + 
+                                " isDifferent" + seperator + seperator;
             }
             values.Add(currentLine);
             //clear our currentLine variable because we've added it to the list already
@@ -122,22 +135,22 @@ namespace SimCompare
 
                 try
                 {
-                    entry += orig_data.Element("shapeId").Value + ",";
-                    entry += orig_data.Element("lugIndex").Value + ",";
+                    entry += orig_data.Element("shapeId").Value + seperator;
+                    entry += orig_data.Element("lugIndex").Value + seperator;
 
                     //To account for no solution
                     if (orig_data.Element("price").Value != "0.0")
                     {
-                        entry += orig_data.Element("name").Value + ",";
-                        entry += orig_data.Element("grade").Value + ",";
+                        entry += orig_data.Element("name").Value + seperator;
+                        entry += orig_data.Element("grade").Value + seperator;
                     }
                     else
                     {
-                        entry += ",,";
+                        entry += seperator + seperator;
                     }
 
-                    entry += orig_data.Element("price").Value + ",";
-                    entry += orig_data.Element("volume").Value + ",,";
+                    entry += orig_data.Element("price").Value + seperator;
+                    entry += orig_data.Element("volume").Value + seperator + seperator;
                 }
                 catch { }
                
@@ -150,24 +163,24 @@ namespace SimCompare
                     XElement sim_data = changes[sim].Root.Elements().ElementAt(j);
                     try
                     {
-                        entry += sim_data.Element("shapeId").Value + ",";
-                        entry += sim_data.Element("lugIndex").Value + ",";
+                        entry += sim_data.Element("shapeId").Value + seperator;
+                        entry += sim_data.Element("lugIndex").Value + seperator;
 
                         //To account for no solution
                         if (sim_data.Element("price").Value != "0.0")
                         {
-                            entry += sim_data.Element("name").Value + ",";
-                            entry += sim_data.Element("grade").Value + ",";
+                            entry += sim_data.Element("name").Value + seperator;
+                            entry += sim_data.Element("grade").Value + seperator;
                         }
                         else
                         {
-                            entry += ",,";
+                            entry += seperator + seperator;
                         }
 
-                        entry += sim_data.Element("price").Value + ",";
-                        entry += sim_data.Element("volume").Value + ",";
+                        entry += sim_data.Element("price").Value + seperator;
+                        entry += sim_data.Element("volume").Value + seperator;
 
-                        if(sim_data.Elements("name").Any() && orig_data.Elements("name").Any())
+                        if (sim_data.Elements("name").Any() && orig_data.Elements("name").Any())
                         {
                             if (sim_data.Element("name").Value != orig_data.Element("name").Value)
                                 isDifferent = true;
@@ -176,9 +189,9 @@ namespace SimCompare
                     }
                     catch { }
                     if (isDifferent)
-                        entry += "1,,";
+                        entry += "1" + seperator + seperator;
                     else
-                        entry += ",,";
+                        entry += seperator + seperator;
                 }
 
                 values.Add(entry);
@@ -225,8 +238,20 @@ namespace SimCompare
                 }
 
                 //Make the first lines of our CSV file some useful headers.
-                values.Add("ORIGINAL DATA,,,,,,,,CHANGED DATA");
-                values.Add("shapeId, lugIndex, name, grade, price, volume,,shapeId, lugIndex, name, grade, price, volume,isDifferent");
+                values.Add("ORIGINAL DATA" + seperator + seperator + seperator + seperator + seperator + seperator + seperator + seperator + "CHANGED DATA");
+                values.Add("shapeId" + seperator +
+                            " lugIndex" + seperator +
+                            " name" + seperator +
+                            " grade" + seperator +
+                            " price" + seperator +
+                            " volume" + seperator + seperator +
+                            " shapeId" + seperator +
+                            " lugIndex" + seperator +
+                            " name" + seperator +
+                            " grade" + seperator +
+                            " price" + seperator +
+                            " volume" + seperator +
+                            " isDifferent");
 
                 //Loop through all of the XML data..
                 for (int j = 0; j < doc.Root.Elements().Count(); j++)
@@ -251,12 +276,12 @@ namespace SimCompare
                             {
                                 //This is to account for a no solution 
                                 if (element.Elements().ElementAt(i).Name.LocalName == "price" && orig_data.Elements().ElementAt(i).Value == "0.0")
-                                    entry += ",,";
-                                entry += (orig_data.Elements().ElementAt(i).Value + ",");
+                                    entry += seperator + seperator;
+                                entry += (orig_data.Elements().ElementAt(i).Value + seperator);
                             }
                             else if (element.Elements().ElementAt(i).Name.LocalName == "volume")
                             {
-                                entry += (orig_data.Elements().ElementAt(i).Value + ",,");
+                                entry += (orig_data.Elements().ElementAt(i).Value + seperator + seperator);
 
                             }
                             //values.Add(el.Attribute("Value").Value.ToString());
@@ -271,8 +296,8 @@ namespace SimCompare
                             if (element.Elements().ElementAt(i).Name.LocalName == "shapeId" || element.Elements().ElementAt(i).Name.LocalName == "lugIndex" || element.Elements().ElementAt(i).Name.LocalName == "name" || element.Elements().ElementAt(i).Name.LocalName == "grade" || element.Elements().ElementAt(i).Name.LocalName == "price")
                             {
                                 if (element.Elements().ElementAt(i).Name.LocalName == "price" && orig_data.Elements().ElementAt(i).Value == "0.0")
-                                    entry += ",,";
-                                entry += (element.Elements().ElementAt(i).Value + ",");
+                                    entry += seperator + seperator;
+                                entry += (element.Elements().ElementAt(i).Value + seperator);
                             }
                             else if (element.Elements().ElementAt(i).Name.LocalName == "volume")
                             {
@@ -288,7 +313,7 @@ namespace SimCompare
                         catch { }
                     }
                     if (isDifferent)
-                        entry += ",1";
+                        entry += seperator + "1";
                     if (outputDifferences)
                     {
                         if (isDifferent)
