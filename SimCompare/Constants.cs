@@ -10,7 +10,7 @@ namespace SimCompare
     {
         public static string TITLE = "SimCompare BETA";
         public static string VERSION = "0";
-        public static string REVISION = "11";
+        public static string REVISION = "12";
 
         public static string OUTPUT_FOLDER = "outputs";
     }

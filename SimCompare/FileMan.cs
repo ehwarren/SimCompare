@@ -18,6 +18,7 @@ namespace SimCompare
         private String[] fileList;
         public String[] originalFileToParse { get; set; }
         public String[] modifiedFilesToParse { get; set; }
+
         static string seperator = CultureInfo.CurrentCulture.TextInfo.ListSeparator;
 
         public FileMan()
@@ -79,13 +80,13 @@ namespace SimCompare
 
             String currentLine = "";
             //Add the tags for each of the simulations
-            currentLine = "ORIGINAL DATA" + seperator + seperator + seperator + seperator + seperator + seperator + seperator;
+            currentLine = "ORIGINAL DATA" + seperator + seperator + seperator + seperator + seperator + seperator + seperator + seperator;
             for (int i = 0; i < modifiedFilesToParse.Length; i++)
             {
                 currentLine += "SIMULATION ";
                 currentLine += i + 1;
                 currentLine += " " + modifiedFilesToParse[i];
-                currentLine += seperator + seperator + seperator + seperator + seperator + seperator + seperator + seperator;
+                currentLine += seperator + seperator + seperator + seperator + seperator + seperator + seperator + seperator + seperator;
             }
             values.Add(currentLine);
             //add the column headers for each of the simulations
@@ -94,7 +95,8 @@ namespace SimCompare
                             " name" + seperator + 
                             " grade" + seperator +
                             " price" + seperator + 
-                            " volume" + seperator + seperator;
+                            " volume" + seperator +
+                            " zPositoin" + seperator + seperator;
             for (int i = 0; i < modifiedFilesToParse.Length; i++)
             {
                 currentLine += "shapeId" + seperator +
@@ -102,7 +104,8 @@ namespace SimCompare
                                 " name" + seperator + 
                                 " grade" + seperator +
                                 " price" + seperator +
-                                " volume" + seperator + 
+                                " volume" + seperator +
+                                " zPositoin" + seperator +
                                 " isDifferent" + seperator + seperator;
             }
             values.Add(currentLine);
@@ -150,7 +153,8 @@ namespace SimCompare
                     }
 
                     entry += orig_data.Element("price").Value + seperator;
-                    entry += orig_data.Element("volume").Value + seperator + seperator;
+                    entry += orig_data.Element("volume").Value + seperator;
+                    entry += orig_data.Element("zPosition").Value + seperator + seperator;
                 }
                 catch { }
                
@@ -179,10 +183,16 @@ namespace SimCompare
 
                         entry += sim_data.Element("price").Value + seperator;
                         entry += sim_data.Element("volume").Value + seperator;
+                        entry += sim_data.Element("zPosition").Value + seperator;
 
                         if (sim_data.Elements("name").Any() && orig_data.Elements("name").Any())
                         {
                             if (sim_data.Element("name").Value != orig_data.Element("name").Value)
+                                isDifferent = true;
+                        }
+                        if (sim_data.Elements("zPosition").Any() && orig_data.Elements("zPosition").Any())
+                        {
+                            if (sim_data.Element("zPosition").Value != orig_data.Element("zPosition").Value)
                                 isDifferent = true;
                         }
                         
