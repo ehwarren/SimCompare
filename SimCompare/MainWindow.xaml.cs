@@ -73,6 +73,7 @@ namespace SimCompare
             if (modeSelector.SelectedIndex == 0)
             {
                 pB.Show();
+                fMan.useZPosAsDifference = (bool)usePostionCheckbox.IsChecked;
                 BackgroundWorker worker = new BackgroundWorker();
                 worker.WorkerReportsProgress = true;
                 worker.DoWork += fMan.parseFilesInOne;

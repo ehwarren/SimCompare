@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SimCompare"
         mc:Ignorable="d"
-        Title="SimCompare" Height="341.072" Width="547.869" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" Icon="Compare.ico">
+        Title="SimCompare" Height="360.642" Width="547.869" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" Icon="Compare.ico">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="223*"/>
@@ -23,5 +23,7 @@
         <Label x:Name="labelModeSelector" Content="Output Mode" HorizontalAlignment="Left" Margin="10,260,0,0" VerticalAlignment="Top" Width="83" FontFamily="Segoe UI Semilight" Height="26"/>
         <Button x:Name="btnCompare" Content="Compare!" Grid.Column="3" HorizontalAlignment="Left" Margin="152,264,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.797,-0.318" Click="btnCompare_Click" FontFamily="Segoe UI Semilight" Background="{x:Null}" Height="22" Grid.ColumnSpan="3" ToolTip="Compare the selected files.."/>
         <Button x:Name="btnRefresh" Content="Refresh Files" Grid.Column="3" HorizontalAlignment="Left" Margin="39,265,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="0.797,-0.318" Click="btnRefresh_Click" FontFamily="Segoe UI Semilight" Background="{x:Null}" Height="22" Grid.ColumnSpan="2" ToolTip="Refresh files in the lists above"/>
+        <CheckBox x:Name="usePostionCheckbox" Content="Use zPosition as difference" HorizontalAlignment="Left" Margin="98,291,0,0" VerticalAlignment="Top" Grid.ColumnSpan="3" Width="162"/>
+        <CheckBox x:Name="showOutputFolderCheckbox" Content="Open output folder after compare" HorizontalAlignment="Left" Margin="98,307,0,0" VerticalAlignment="Top" Grid.ColumnSpan="5" Width="198" IsChecked="True"/>
     </Grid>
 </Window>

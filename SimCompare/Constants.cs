@@ -8,9 +8,9 @@ namespace SimCompare
 {
     class Constants
     {
-        public static string TITLE = "SimCompare BETA";
-        public static string VERSION = "0";
-        public static string REVISION = "12";
+        public static string TITLE = "SimCompare";
+        public static string VERSION = "1";
+        public static string REVISION = "1";
 
         public static string OUTPUT_FOLDER = "outputs";
     }

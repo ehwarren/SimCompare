@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -18,12 +19,14 @@ namespace SimCompare
         private String[] fileList;
         public String[] originalFileToParse { get; set; }
         public String[] modifiedFilesToParse { get; set; }
+        public bool useZPosAsDifference;
 
         static string seperator = CultureInfo.CurrentCulture.TextInfo.ListSeparator;
 
         public FileMan()
         {
             refreshFiles();
+            useZPosAsDifference = true;
         }
 
         public void refreshFiles()
@@ -96,7 +99,7 @@ namespace SimCompare
                             " grade" + seperator +
                             " price" + seperator + 
                             " volume" + seperator +
-                            " zPositoin" + seperator + seperator;
+                            " zPosition" + seperator + seperator;
             for (int i = 0; i < modifiedFilesToParse.Length; i++)
             {
                 currentLine += "shapeId" + seperator +
@@ -105,7 +108,7 @@ namespace SimCompare
                                 " grade" + seperator +
                                 " price" + seperator +
                                 " volume" + seperator +
-                                " zPositoin" + seperator +
+                                " zPosition" + seperator +
                                 " isDifferent" + seperator + seperator;
             }
             values.Add(currentLine);
@@ -190,12 +193,14 @@ namespace SimCompare
                             if (sim_data.Element("name").Value != orig_data.Element("name").Value)
                                 isDifferent = true;
                         }
-                        if (sim_data.Elements("zPosition").Any() && orig_data.Elements("zPosition").Any())
+                        if (useZPosAsDifference == true)
                         {
-                            if (sim_data.Element("zPosition").Value != orig_data.Element("zPosition").Value)
-                                isDifferent = true;
-                        }
-                        
+                            if (sim_data.Elements("zPosition").Any() && orig_data.Elements("zPosition").Any())
+                            {
+                                if (sim_data.Element("zPosition").Value != orig_data.Element("zPosition").Value)
+                                    isDifferent = true;
+                            }
+                        }                        
                     }
                     catch { }
                     if (isDifferent)
@@ -210,8 +215,10 @@ namespace SimCompare
                 currentLine = "";
 
             }
+            string outputDir = Directory.GetCurrentDirectory() + "/" + Constants.OUTPUT_FOLDER;
             MessageBox.Show(writeCSV(values, originalFileToParse[0]));
-
+            //Open a folder to the output directory
+            Process.Start(outputDir);
         }
 
         public string parseFiles(bool outputDifferences)
