@@ -74,6 +74,7 @@ namespace SimCompare
             {
                 pB.Show();
                 fMan.useZPosAsDifference = (bool)usePostionCheckbox.IsChecked;
+                fMan.openFolderAfterCompare = (bool)showOutputFolderCheckbox.IsChecked;
                 BackgroundWorker worker = new BackgroundWorker();
                 worker.WorkerReportsProgress = true;
                 worker.DoWork += fMan.parseFilesInOne;

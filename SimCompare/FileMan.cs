@@ -20,6 +20,7 @@ namespace SimCompare
         public String[] originalFileToParse { get; set; }
         public String[] modifiedFilesToParse { get; set; }
         public bool useZPosAsDifference;
+        public bool openFolderAfterCompare;
 
         static string seperator = CultureInfo.CurrentCulture.TextInfo.ListSeparator;
 
@@ -27,6 +28,7 @@ namespace SimCompare
         {
             refreshFiles();
             useZPosAsDifference = true;
+            openFolderAfterCompare = true;
         }
 
         public void refreshFiles()
@@ -217,8 +219,12 @@ namespace SimCompare
             }
             string outputDir = Directory.GetCurrentDirectory() + "/" + Constants.OUTPUT_FOLDER;
             MessageBox.Show(writeCSV(values, originalFileToParse[0]));
-            //Open a folder to the output directory
-            Process.Start(outputDir);
+            if(openFolderAfterCompare)
+            {
+                //Open a folder to the output directory
+                Process.Start(outputDir);
+            }
+
         }
 
         public string parseFiles(bool outputDifferences)
